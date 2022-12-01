@@ -67,24 +67,6 @@ TLS_VERIFY true
 CONFIGURE_HANDLED_BY_BUILD true
 )
 
-# METIS
-
-set(metis_cmake_args ${cmake_args})
-# METIS doesn't use INTSIZE64 like Scotch
-
-string(JSON metis_url GET ${json} metis git)
-string(JSON metis_tag GET ${json} metis tag)
-
-ExternalProject_Add(metis
-GIT_REPOSITORY ${metis_url}
-GIT_TAG ${metis_tag}
-GIT_SHALLOW true
-CMAKE_ARGS ${metis_cmake_args}
-INACTIVITY_TIMEOUT 60
-TLS_VERIFY true
-CONFIGURE_HANDLED_BY_BUILD true
-)
-
 # Scotch
 
 function(bison_homebrew)
@@ -119,8 +101,8 @@ bison_homebrew()
 
 # https://gitlab.inria.fr/scotch/scotch/-/blob/master/CMakeLists.txt
 set(scotch_cmake_args ${cmake_args}
--DINSTALL_METIS_HEADERS:BOOL=false
--DBUILD_LIBSCOTCHMETIS:BOOL=false
+-DINSTALL_METIS_HEADERS:BOOL=true
+-DBUILD_LIBSCOTCHMETIS:BOOL=true
 -DBUILD_LIBESMUMPS:BOOL=true
 -DINTSIZE=$<IF:$<BOOL:${intsize64}>,64,32>
 )
@@ -139,7 +121,6 @@ GIT_TAG ${scotch_tag}
 GIT_SHALLOW true
 CMAKE_ARGS ${scotch_cmake_args}
 INACTIVITY_TIMEOUT 60
-DEPENDS metis
 TLS_VERIFY true
 CONFIGURE_HANDLED_BY_BUILD true
 )

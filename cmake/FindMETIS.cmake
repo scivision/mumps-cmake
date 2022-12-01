@@ -4,9 +4,9 @@
 #[=======================================================================[.rst:
 FindMETIS
 -------
-Michael Hirsch, Ph.D.
 
 Finds the METIS library.
+Also can find the ScotchMETIS library.
 NOTE: If libparmetis used, libmetis must also be linked.
 
 Imported Targets
@@ -38,7 +38,7 @@ if(parallel IN_LIST METIS_FIND_COMPONENTS)
 endif()
 
 find_library(METIS_LIBRARY
-  NAMES metis
+  NAMES metis scotchmetisv5
   PATH_SUFFIXES METIS libmetis
   DOC "METIS library"
   )
