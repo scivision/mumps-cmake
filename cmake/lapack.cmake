@@ -4,6 +4,11 @@ include(CheckSourceCompiles)
 include(ExternalProject)
 include(GNUInstallDirs)
 
+if(NOT PROJECT_IS_TOP_LEVEL)
+  message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION} deferring to ${CMAKE_PROJECT_NAME} for LAPACK")
+  return()
+endif()
+
 if(find_lapack)
 
 if(NOT DEFINED LAPACK_VENDOR AND DEFINED ENV{MKLROOT})
@@ -121,7 +126,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/GitSubmodule.cmake)
 git_submodule("${PROJECT_SOURCE_DIR}/lapack")
 
 ExternalProject_Add(lapack
-URL ${PROJECT_SOURCE_DIR}/lapack
+SOURCE_DIR ${PROJECT_SOURCE_DIR}/lapack
 CMAKE_ARGS ${lapack_cmake_args}
 TEST_COMMAND ""
 BUILD_BYPRODUCTS ${LAPACK_LIBRARIES}
