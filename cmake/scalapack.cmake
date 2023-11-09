@@ -1,29 +1,31 @@
 include(ExternalProject)
 include(GNUInstallDirs)
 
-if(find)
+if(find_scalapack)
 
-if(NOT DEFINED SCALAPACK_VENDOR AND DEFINED ENV{MKLROOT})
-  set(SCALAPACK_VENDOR MKL)
-endif()
-
-if(MKL IN_LIST SCALAPACK_VENDOR)
-  if(intsize64)
-    list(APPEND SCALAPACK_VENDOR MKL64)
+  if(NOT DEFINED SCALAPACK_VENDOR AND DEFINED ENV{MKLROOT})
+    set(SCALAPACK_VENDOR MKL)
   endif()
-endif()
 
-if(find_static)
-  list(APPEND SCALAPACK_VENDOR STATIC)
-endif()
+  if(MKL IN_LIST SCALAPACK_VENDOR)
+    if(intsize64)
+      list(APPEND SCALAPACK_VENDOR MKL64)
+    endif()
+  endif()
 
-find_package(SCALAPACK COMPONENTS ${SCALAPACK_VENDOR})
+  if(find_static)
+    list(APPEND SCALAPACK_VENDOR STATIC)
+  endif()
+
+  find_package(SCALAPACK COMPONENTS ${SCALAPACK_VENDOR})
 
 endif()
 
 if(SCALAPACK_FOUND)
   return()
 endif()
+
+# -- build SCALAPAC
 
 set(scalapack_cmake_args
 -DBUILD_SINGLE:BOOL=${BUILD_SINGLE}
@@ -38,11 +40,6 @@ set(scalapack_cmake_args
 -DCMAKE_BUILD_TYPE:STRING=Release
 -DCMAKE_TLS_VERIFY:BOOL=${CMAKE_TLS_VERIFY}
 )
-
-file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json)
-
-string(JSON scalapack_url GET ${json} scalapack git)
-string(JSON scalapack_tag GET ${json} scalapack tag)
 
 set(SCALAPACK_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR})
 file(MAKE_DIRECTORY ${SCALAPACK_INCLUDE_DIRS})
@@ -60,13 +57,14 @@ else()
   )
 endif()
 
+
+include(${CMAKE_CURRENT_LIST_DIR}/GitSubmodule.cmake)
+git_submodule("${PROJECT_SOURCE_DIR}/scalapack")
+
 ExternalProject_Add(scalapack
-GIT_REPOSITORY ${scalapack_url}
-GIT_TAG ${scalapack_tag}
-GIT_SHALLOW true
+URL ${PROJECT_SOURCE_DIR}/scalapack
 CMAKE_ARGS ${scalapack_cmake_args}
 TEST_COMMAND ""
-INACTIVITY_TIMEOUT 60
 BUILD_BYPRODUCTS ${SCALAPACK_LIBRARIES}
 CONFIGURE_HANDLED_BY_BUILD true
 USES_TERMINAL_DOWNLOAD true

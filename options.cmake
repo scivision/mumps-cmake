@@ -1,17 +1,4 @@
-option(find_static "Find static libraries for Lapack and Scalapack (default shared then static search)")
-
-if(local)
-  get_filename_component(local ${local} ABSOLUTE)
-
-  if(NOT IS_DIRECTORY ${local})
-    message(FATAL_ERROR "Local directory ${local} does not exist")
-  endif()
-endif()
-
-if(MUMPS_UPSTREAM_VERSION VERSION_GREATER_EQUAL 5.2)
-  option(gemmt "GEMMT is recommended in User Manual if available" ON)
-endif()
-
+option(gemmt "GEMMT is recommended in User Manual if available" ON)
 
 option(parallel "parallel (use MPI)" ON)
 
@@ -33,12 +20,13 @@ if((matlab OR octave) AND parallel)
   message(FATAL_ERROR "Matlab / Octave requires parallel=off")
 endif()
 
-option(find "find [SCA]LAPACK" on)
+option(find_lapack "find LAPACK" on)
+option(find_scalapack "find ScaLAPACK" on)
+option(find_static "Find static libraries for Lapack and Scalapack (default shared then static search)")
 
 option(BUILD_SHARED_LIBS "Build shared libraries")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 
 option(BUILD_SINGLE "Build single precision float32 real" ON)
 option(BUILD_DOUBLE "Build double precision float64 real" ON)
@@ -47,12 +35,9 @@ option(BUILD_COMPLEX16 "Build double precision complex")
 
 # --- other options
 
-option(CMAKE_TLS_VERIFY "Verify TLS certificates" ON)
-
 set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
-
 set(FETCHCONTENT_UPDATES_DISCONNECTED true)
 
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND PROJECT_IS_TOP_LEVEL)
   set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/local" CACHE PATH "default install path" FORCE)
 endif()

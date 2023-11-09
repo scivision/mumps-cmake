@@ -1,0 +1,6 @@
+[submodule "scalapack"]
+	path = scalapack
+	url = https://github.com/scivision/scalapack
+[submodule "lapack"]
+	path = lapack
+	url = https://github.com/Reference-LAPACK/lapack.git
