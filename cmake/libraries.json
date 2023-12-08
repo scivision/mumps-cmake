@@ -9,7 +9,11 @@
   },
   "metis": {
     "git": "https://github.com/scivision/METIS.git",
-    "tag": "v5.1.0.3"
+    "tag": "fd7799b"
+  },
+  "parmetis": {
+    "git": "https://github.com/scivision/ParMETIS.git",
+    "tag": "c498ce4"
   },
   "scotch": {
     "git": "https://gitlab.inria.fr/scotch/scotch.git",

@@ -74,7 +74,7 @@ CONFIGURE_HANDLED_BY_BUILD true
 # METIS
 
 set(metis_cmake_args ${cmake_args}
--Dintsize=$<IF:$<BOOL:${intsize64}>,64,32>
+-DIDXTYPEWIDTH=$<IF:$<BOOL:${intsize64}>,64,32>
 )
 
 string(JSON metis_url GET ${json} metis git)
@@ -85,6 +85,25 @@ GIT_REPOSITORY ${metis_url}
 GIT_TAG ${metis_tag}
 GIT_SHALLOW true
 CMAKE_ARGS ${metis_cmake_args}
+INACTIVITY_TIMEOUT 60
+CONFIGURE_HANDLED_BY_BUILD true
+)
+
+# parMETIS
+
+set(parmetis_cmake_args ${cmake_args}
+-DIDXTYPEWIDTH=$<IF:$<BOOL:${intsize64}>,64,32>
+)
+
+string(JSON parmetis_url GET ${json} parmetis git)
+string(JSON parmetis_tag GET ${json} parmetis tag)
+
+
+ExternalProject_Add(parmetis
+GIT_REPOSITORY ${parmetis_url}
+GIT_TAG ${parmetis_tag}
+GIT_SHALLOW true
+CMAKE_ARGS ${parmetis_cmake_args}
 INACTIVITY_TIMEOUT 60
 CONFIGURE_HANDLED_BY_BUILD true
 )
