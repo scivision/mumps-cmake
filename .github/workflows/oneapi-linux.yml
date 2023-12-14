@@ -7,6 +7,8 @@ env:
   LINUX_MPI_COMPONENTS: "intel-oneapi-mpi intel-oneapi-mpi-devel"
 # https://github.com/oneapi-src/oneapi-ci/blob/master/.github/workflows/build_all.yml
   CTEST_NO_TESTS_ACTION: error
+  CC: icx
+  FC: ifx
 
 on:
   push:
