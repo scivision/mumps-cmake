@@ -55,6 +55,7 @@ jobs:
       run: |
         source /opt/intel/oneapi/setvars.sh
         printenv >> $GITHUB_ENV
+        printenv
 
     - name: install Ninja
       run: sudo apt install ninja-build
