@@ -73,9 +73,10 @@ CONFIGURE_HANDLED_BY_BUILD true
 
 # METIS
 
-set(metis_cmake_args ${cmake_args}
--DIDXTYPEWIDTH=$<IF:$<BOOL:${intsize64}>,64,32>
-)
+set(metis_cmake_args ${cmake_args})
+if(IDXTYPEWIDTH)
+  list(APPEND metis_cmake_args -DIDXTYPEWIDTH=${IDXTYPEWIDTH})
+endif()
 
 string(JSON metis_url GET ${json} metis git)
 string(JSON metis_tag GET ${json} metis tag)
@@ -91,13 +92,13 @@ CONFIGURE_HANDLED_BY_BUILD true
 
 # parMETIS
 
-set(parmetis_cmake_args ${cmake_args}
--DIDXTYPEWIDTH=$<IF:$<BOOL:${intsize64}>,64,32>
-)
+set(parmetis_cmake_args ${cmake_args})
+if(IDXTYPEWIDTH)
+  list(APPEND parmetis_cmake_args -DIDXTYPEWIDTH=${IDXTYPEWIDTH})
+endif()
 
 string(JSON parmetis_url GET ${json} parmetis git)
 string(JSON parmetis_tag GET ${json} parmetis tag)
-
 
 ExternalProject_Add(parmetis
 GIT_REPOSITORY ${parmetis_url}
