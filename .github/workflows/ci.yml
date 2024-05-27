@@ -36,13 +36,16 @@ jobs:
         lapack_vendor: [""]
         os: [ubuntu-24.04, macos-latest]
         include:
-          - scotch: true
+          - name: Scotch
+            scotch: true
             os: ubuntu-24.04
-          - metis: true
+          - name: Metis
+            metis: true
             os: ubuntu-24.04
           - lapack_vendor: "OpenBLAS"
             os: ubuntu-24.04
-          - parallel: false
+          - name: No MPI
+            parallel: false
             os: ubuntu-24.04
 
     runs-on: ${{ matrix.os }}
