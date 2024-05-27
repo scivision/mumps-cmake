@@ -34,38 +34,6 @@ set(cmake_args
 -DBUILD_TESTING:BOOL=false
 )
 
-# Lapack
-set(lapack_cmake_args ${cmake_args}
--DBUILD_SINGLE:BOOL=${BUILD_SINGLE}
--DBUILD_DOUBLE:BOOL=${BUILD_DOUBLE}
--DBUILD_COMPLEX:BOOL=${BUILD_COMPLEX}
--DBUILD_COMPLEX16:BOOL=${BUILD_COMPLEX16}
-)
-
-string(JSON lapack_url GET ${json} lapack git)
-
-ExternalProject_Add(lapack
-URL ${lapack_url}
-CMAKE_ARGS ${lapack_cmake_args}
-CONFIGURE_HANDLED_BY_BUILD true
-)
-
-# Scalapack
-
-set(scalapack_cmake_args ${lapack_cmake_args})
-
-string(JSON scalapack_url GET ${json} scalapack git)
-string(JSON scalapack_tag GET ${json} scalapack tag)
-
-ExternalProject_Add(scalapack
-GIT_REPOSITORY ${scalapack_url}
-GIT_TAG ${scalapack_tag}
-GIT_SHALLOW true
-CMAKE_ARGS ${scalapack_cmake_args}
-DEPENDS lapack
-CONFIGURE_HANDLED_BY_BUILD true
-)
-
 # METIS
 
 set(metis_cmake_args ${cmake_args}

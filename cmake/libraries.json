@@ -2,10 +2,6 @@
   "lapack": {
     "git": "https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.0.tar.gz"
   },
-  "scalapack": {
-    "git": "https://github.com/scivision/scalapack.git",
-    "tag": "7d2a199b91187f92c553179e22f76f42bc813728"
-  },
   "metis": {
     "git": "https://github.com/scivision/METIS.git",
     "tag": "v5.1.0.3"

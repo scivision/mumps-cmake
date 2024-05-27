@@ -123,3 +123,45 @@ jobs:
       if: ${{ failure() && matrix.metis }}
       run: |
         cat example/metis/build/CMakeFiles/CMakeConfigureLog.yaml
+
+
+  autobuild_scalapack:
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        os: [ubuntu-24.04]
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      FC: gfortran-13
+
+    steps:
+
+    - name: Install prereqs (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt update
+        sudo apt install --no-install-recommends libopenmpi-dev openmpi-bin liblapack-dev ninja-build
+
+    - name: Install prereqs (macOS)
+      if: runner.os == 'macOS'
+      run: brew install open-mpi ninja
+
+    - uses: actions/checkout@v4
+
+    - name: Build, test Scalpack and MUMPSS
+      run: cmake --workflow --preset default
+
+    - name: install package
+      run: cmake --install build
+
+    - name: configure example
+      run: cmake -S example -B example/build
+
+    - name: build example
+      run: cmake --build example/build
+
+    - name: test example
+      run: ctest --test-dir example/build -V
