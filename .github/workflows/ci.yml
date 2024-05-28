@@ -20,6 +20,7 @@ on:
       - "**.cmake"
       - "**.cmake.in"
       - "**.txt"
+      - "scalapack/**"
       - ".github/workflows/ci.yml"
       - "!scripts/*"
 
